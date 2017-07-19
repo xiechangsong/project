@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.teaching.TeacherMapper">
+  <insert id="addTeacher" parameterType="com.api.model.teaching.teacher.Teacher">
+    insert into USER (name, profile, pic_path, status,create_time,sort) values(#{name}, #{profile},#{pic_path},#{status},#{create_time},#{sort})
+  </insert>
+
+  <select id="teacherList" parameterType="java.lang.String" resultType="com.api.model.teaching.teacher.Teacher">
+    SELECT ID,NAME,PROFILE,PIC_PATH AS  picPath,STATUS,CREATE_TIME AS  createTime,SORT FROM TEACHER WHERE 1=1
+    <if test="_parameter != null and _parameter!=''">
+      AND NAME LIKE '%${_parameter}%'
+    </if>
+
+  </select>
+ 
+</mapper>

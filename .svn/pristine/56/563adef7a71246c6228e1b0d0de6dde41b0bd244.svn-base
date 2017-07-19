@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.system.SysUserMapper">
+
+    <select id="findSysUserInfo" resultType="com.api.model.teaching.system.SysUser">
+        select user_id AS userId, create_time AS createTime, email, last_login_ip AS lastLoginIp, last_login_time AS lastLoginTime, login_name AS loginName, login_pwd AS loginPwd, role_id AS roleId, status,tel ,user_name AS userName from sys_user;
+    </select>
+    <select id="findAllSysUser" resultType="com.api.model.teaching.system.SysUser">
+        select user_id AS userId, create_time AS createTime, email, last_login_ip AS lastLoginIp, last_login_time AS lastLoginTime, login_name AS loginName, login_pwd AS loginPwd, role_id AS roleId, status,tel ,user_name AS userName from sys_user;
+    </select>
+    <select id="getSysUser" resultType="com.api.model.teaching.system.SysUser" parameterType="java.lang.String">
+        select user_id AS userId, create_time AS createTime, email, last_login_ip AS lastLoginIp, last_login_time AS lastLoginTime, login_name AS loginName, login_pwd AS loginPwd, role_id AS roleId, status,tel ,user_name AS userName from sys_user where login_name=#{name}
+    </select>
+    <insert id="registerSysUser" parameterType="com.api.model.teaching.system.SysUser">
+        insert into sys_user (create_time, email, last_login_ip, last_login_time, login_name, login_pwd, role_id, status,tel ,user_name) values(now(), #{email},#{lastLoginIp},#{lastLoginTime},#{loginName},#{loginPwd},#{roleId},#{status},#{tel},#{userName})
+    </insert>
+    <update id="updateSysUser" parameterType="com.api.model.teaching.system.SysUser">
+        UPDATE sys_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="email!=null">email=#{email},</if>
+            <if test="loginPwd!=null">login_pwd=#{loginPwd},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="tel!=null">tel=#{tel},</if>
+            <if test="loginName!=null">user_name=#{loginName}</if>
+        </trim>
+        WHERE user_id=#{userId};
+    </update>
+
+    <delete id="deleteSysUser" parameterType="com.api.model.teaching.system.SysUser">
+        DELETE FROM sys_user WHERE user_id=#{userId};
+    </delete>
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.system.SubjectMapper">
+
+  <resultMap id="SubjectResultMap" type="com.api.model.system.subject.Subject">
+    <result column="subject_id" property="subjectId" />
+    <result column="subject_name" property="subjectName" />
+    <result column="status" property="status" />
+    <result column="create_time" property="createTime" />
+    <result column="parent_id" property="parentId" />
+    <result column="sort" property="sort" />
+  </resultMap>
+  <parameterMap id="Subject" type="com.api.model.system.subject.Subject" />
+
+  <sql id="Subject_Column_List">subject_id, subject_name, status, create_time,parent_id,sort</sql>
+
+  <insert id="addSubject" parameterMap="Subject">
+    /*  获取插入后的主键id*/
+      <selectKey resultType="int" keyProperty="subjectId" order="AFTER" >
+          SELECT LAST_INSERT_ID() AS subjectId
+      </selectKey>
+    insert into subject
+        (create_time, parent_id, sort, status,subject_name)
+    values
+        (#{createTime}, #{parentId},#{sort},#{status},#{subjectName})
+  </insert>
+
+  <select id="subjectList" resultMap="SubjectResultMap">
+    SELECT
+    <include refid="Subject_Column_List" />
+    FROM SUBJECT
+  </select>
+
+  <select id="findSubject" parameterType="java.lang.Integer" resultMap="SubjectResultMap">
+    SELECT
+    <include refid="Subject_Column_List" />
+    FROM SUBJECT WHERE SUBJECT_ID=#{id}
+  </select>
+
+  <delete id="deleteSubject" parameterType="java.lang.Integer">
+     DELETE FROM SUBJECT WHERE SUBJECT_ID=#{id}
+   </delete>
+
+<update id="updateSubject" parameterMap="Subject">
+    UPDATE Subject
+    <trim prefix="set" suffixOverrides=",">
+      <if test="subjectName!=null">subject_name=#{subjectName},</if>
+        <if test="sort!=null">sort=#{sort},</if>
+    </trim>
+    WHERE subject_id=#{subjectId}
+  </update>
+
+
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.user.SysUserMapper">
+
+    <select id="findSysUserInfo" resultType="com.api.model.teaching.system.SysUser">
+        select user_id AS userId, create_time AS createTime, email, last_login_ip AS lastLoginIp, last_login_time AS lastLoginTime, login_name AS loginName, login_pwd AS loginPwd, role_id AS roleId, status,tel ,user_name AS userName from sys_user;
+    </select>
+    <select id="findAlls" resultType="com.api.model.teaching.system.SysUser">
+        select user_id AS userId, create_time AS createTime, email, last_login_ip AS lastLoginIp, last_login_time AS lastLoginTime, login_name AS loginName, login_pwd AS loginPwd, role_id AS roleId, status,tel ,user_name AS userName from sys_user;
+    </select>
+    <select id="getSysUsers" resultType="com.api.model.teaching.system.SysUser" parameterType="java.lang.String">
+        select user_id AS userId, create_time AS createTime, email, last_login_ip AS lastLoginIp, last_login_time AS lastLoginTime, login_name AS loginName, login_pwd AS loginPwd, role_id AS roleId, status,tel ,user_name AS userName from sys_user where login_name=#{name}
+    </select>
+    <insert id="registers" parameterType="com.api.model.teaching.system.SysUser">
+        insert into SysUser (create_time, email, last_login_ip, last_login_time, login_name, login_pwd, role_id, status,tel ,user_name) values(#{createTime}, #{email},#{lastLoginIp},#{lastLoginTime},#{loginName},#{loginPwd},#{roleId},#{status},#{tel},#{userName})
+    </insert>
+
+</mapper>

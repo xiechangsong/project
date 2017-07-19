@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="springboot-multiple-dataSources:war">
+    <output-path>D:/springboot-multiple-dataSources-master/target</output-path>
+    <root id="archive" name="springboot-multiple-dataSources-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="springboot-multiple-dataSources:war exploded" />
+    </root>
+  </artifact>
+</component>

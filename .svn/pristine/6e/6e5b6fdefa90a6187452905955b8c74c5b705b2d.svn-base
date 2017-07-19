@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.teacher.CourseMapper">
+
+    <resultMap id="CourseResultMap" type="com.api.model.teaching.course.Course">
+        <result column="COURSE_ID" property="courseId" />
+        <result column="COURSE_NAME" property="courseName" />
+        <result column="SUBJECT_ID" property="subjectId" />
+        <result column="ADD_TIME" property="addTime" />
+        <result column="TITLE" property="title" />
+          <result column="CONTEXT" property="context" ></result>
+          <result column="LESSION_NUM" property="lessionNum" />
+          <result column="SEQUENCE" property="sequence" />
+          <result column="subject_name" property="subjectName" />
+          <result column="is_recommend" property="isRecommend" />
+    </resultMap>
+
+    <parameterMap id="Course" type="com.api.model.teaching.course.Course" />
+
+    <sql id="Course_Column_List">course_id, course_name, subject_id,add_time,title,context,lession_num,sequence,IS_RECOMMEND</sql>
+
+    <insert id="addCourseNote" parameterType="com.api.model.teaching.course.CourseNote">
+    insert into course_note
+        (user_id, course_id,kpoint_id,content,update_time,status,title)
+    values
+        (#{userId}, #{courseId},#{kpointId},#{content},now(),#{status},#{title})
+  </insert>
+
+    <insert id="addCourse" parameterMap="Course">
+        /*  获取插入后的主键id*/
+        <selectKey resultType="int" keyProperty="courseId" order="AFTER" >
+            SELECT LAST_INSERT_ID() AS courseId
+        </selectKey>
+        insert into course
+        (course_name, subject_id,add_time,title,context,lession_num,sequence)
+        values
+        (#{courseName}, #{subjectId},#{addTime},#{title},#{context},#{lessionNum},#{sequence})
+    </insert>
+
+
+    <select id="courseList" parameterMap="Course" resultType="com.api.model.teaching.course.Course">
+    SELECT
+     c.course_id AS courseId,c.subject_id as subjectId, c.course_name as courseName, s.subject_name as subjectName,c.add_time AS addTime,c.title,c.context,c.lession_num as lessionNum,c.sequence,c.IS_RECOMMEND AS isRecommend
+     FROM COURSE c LEFT JOIN `subject` s on c.subject_id=s.subject_id
+     WHERE 1=1
+     <if test="courseId != null and courseId!=''">
+         and c.course_id=#{courseId}
+     </if>
+     <if test="courseName != null and courseName!=''">
+         AND c.course_name LIKE '%${courseName}%'
+     </if>
+     <if test="subjectId != null and subjectId!=''">
+         and c.subject_id=#{subjectId}
+     </if>
+     <if test="addTime != null and addTime!=''">
+         and c.add_time &gt;= #{addTime}
+     </if>
+     <if test="endTime != null and endTime!=''">
+         and c.add_time &lt;= #{endTime}
+     </if>
+  </select>
+
+    <delete id="deleteCourse" parameterType="java.lang.Integer">
+        DELETE FROM COURSE WHERE COURSE_ID=#{courseId}
+    </delete>
+
+    <!--更新课程-->
+    <update id="updateCourse" parameterMap="Course">
+    UPDATE COURSE
+    <trim prefix="set" suffixOverrides=",">
+      <if test="courseName!=null">course_name=#{courseName},</if>
+        <if test="subjectId!=null and subjectId!=''">subject_id=#{subjectId},</if>
+        <if test="title!=null">title=#{title},</if>
+        <if test="context!=null">context=#{context},</if>
+        <if test="lessionNum!=null">lession_num=#{lessionNum},</if>
+        <if test="sequence!=null">sequence=#{sequence}</if>
+    </trim>
+    WHERE COURSE_ID=#{courseId}
+  </update>
+
+    <!--未加入推荐列表-->
+    <select id="notRecommendedList" parameterMap="Course" resultType="com.api.model.teaching.course.Course">
+        SELECT
+        c.course_id AS courseId,c.subject_id as subjectId, c.course_name as courseName, s.subject_name as subjectName,c.add_time AS addTime,c.title,c.context,c.lession_num as lessionNum,c.sequence,c.IS_RECOMMEND AS isRecommend
+        FROM COURSE c LEFT JOIN `subject` s on c.subject_id=s.subject_id
+        WHERE is_recommend=0
+        <if test="courseId != null and courseId!=''">
+            and c.course_id=#{courseId}
+        </if>
+        <if test="courseName != null and courseName!=''">
+            AND c.course_name LIKE '%${courseName}%'
+        </if>
+        <if test="subjectId != null and subjectId!=''">
+            and c.subject_id=#{subjectId}
+        </if>
+        <if test="addTime != null and addTime!=''">
+            and c.add_time &gt;= #{addTime}
+        </if>
+        <if test="endTime != null and endTime!=''">
+            and c.add_time &lt;= #{endTime}
+        </if>
+    </select>
+
+    <!--推荐列表-->
+    <select id="recommendList" parameterMap="Course" resultMap="CourseResultMap">
+        SELECT
+        c.course_id AS courseId,c.subject_id as subjectId, c.course_name as courseName, s.subject_name as subjectName,c.add_time AS addTime,c.title,c.context,c.lession_num as lessionNum,c.sequence,c.IS_RECOMMEND AS isRecommend
+        FROM COURSE c LEFT JOIN `subject` s on c.subject_id=s.subject_id
+        where 1=1 AND c.IS_RECOMMEND=1
+        <if test="courseId != null and courseId!=''">
+            and c.course_id=#{courseId}
+        </if>
+        <if test="courseName != null and courseName!=''">
+            AND c.course_name LIKE '%${courseName}%'
+        </if>
+    </select>
+
+    <!--加入推荐-->
+    <update id="joinRecommendation" parameterType="java.util.List">
+        UPDATE COURSE
+          SET IS_RECOMMEND=1
+          WHERE course_id IN
+            <foreach collection="list" index="index" item="courseId" open="(" separator="," close=")">
+                #{courseId}
+            </foreach>
+    </update>
+
+    <!--取消推荐-->
+    <update id="cancelRecommendation" parameterMap="Course">
+        UPDATE COURSE
+        SET IS_RECOMMEND=0
+        WHERE course_id=#{courseId}
+    </update>
+</mapper>

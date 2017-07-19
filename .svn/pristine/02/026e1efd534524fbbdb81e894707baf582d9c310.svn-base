@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://D:/springboot-multiple-dataSources-master" />
+    <file type="web" url="file://$PROJECT_DIR$" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="D:/springboot-learning-example-master/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="D:/springboot-learning-example-master/pom.xml" />
+        <option value="D:/springboot-learning-example-master/springboot-dubbo-client/pom.xml" />
+        <option value="D:/springboot-learning-example-master/springboot-dubbo-server/pom.xml" />
+        <option value="D:/springboot-learning-example-master/springboot-elasticsearch/pom.xml" />
+        <option value="D:/springboot-learning-example-master/springboot-freemarker/pom.xml" />
+        <option value="D:/springboot-learning-example-master/springboot-helloworld/pom.xml" />
+        <option value="D:/springboot-learning-example-master/springboot-mybatis-annotation/pom.xml" />
+        <option value="D:/springboot-learning-example-master/springboot-mybatis-mutil-datasource/pom.xml" />
+        <option value="D:/springboot-learning-example-master/springboot-mybatis-redis/pom.xml" />
+        <option value="D:/springboot-learning-example-master/springboot-mybatis/pom.xml" />
+        <option value="D:/springboot-learning-example-master/springboot-properties/pom.xml" />
+        <option value="D:/springboot-learning-example-master/springboot-restful/pom.xml" />
+        <option value="D:/springboot-learning-example-master/springboot-validation-over-json/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="https://ifebiug8dtwu7x6/svn/dttx/service-api" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="mySupportsUserInfoFilter" value="true" />
+  </component>
+</project>

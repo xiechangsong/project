@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://D:/springboot-learning-example-master/springboot-dubbo-client" charset="UTF-8" />
+    <file url="file://D:/springboot-learning-example-master/springboot-dubbo-server" charset="UTF-8" />
+    <file url="file://D:/springboot-learning-example-master/springboot-elasticsearch" charset="UTF-8" />
+    <file url="file://D:/springboot-learning-example-master/springboot-freemarker" charset="UTF-8" />
+    <file url="file://D:/springboot-learning-example-master/springboot-helloworld" charset="UTF-8" />
+    <file url="file://D:/springboot-learning-example-master/springboot-mybatis" charset="UTF-8" />
+    <file url="file://D:/springboot-learning-example-master/springboot-mybatis-annotation" charset="UTF-8" />
+    <file url="file://D:/springboot-learning-example-master/springboot-mybatis-mutil-datasource" charset="UTF-8" />
+    <file url="file://D:/springboot-learning-example-master/springboot-mybatis-redis" charset="UTF-8" />
+    <file url="file://D:/springboot-learning-example-master/springboot-properties" charset="UTF-8" />
+    <file url="file://D:/springboot-learning-example-master/springboot-restful" charset="UTF-8" />
+    <file url="file://D:/springboot-learning-example-master/springboot-validation-over-json" charset="UTF-8" />
+    <file url="file://D:/springboot-multiple-dataSources-master" charset="UTF-8" />
+    <file url="file://E:/girl" charset="UTF-8" />
+  </component>
+</project>

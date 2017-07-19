@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.teacher.CourseCatalogMapper">
+
+  <resultMap id="CourseCatalogResultMap" type="com.api.model.teaching.kpoint.CourseCatalog">
+    <result column="CATALOG_ID" property="catalogId" />
+    <result column="COURSE_ID" property="courseId" />
+    <result column="catalog_name" property="catalogName" />
+    <result column="ADD_TIME" property="addTime" />
+      <result column="SORT" property="sort" />
+      <collection property="courseKpointList" ofType="com.api.model.teaching.kpoint.CourseKpoint">
+          <result column="kpoint_id" property="kpointId" />
+          <result column="name" property="name" />
+          <result column="parent_id" property="parentId" />
+          <result column="add_time" property="addTime" />
+          <result column="sort" property="sort" />
+          <result column="video_url" property="videoUrl" />
+          <result column="teacher_id" property="teacherId" />
+          <result column="kpoint_types" property="kpointTypes" />
+          <result column="video_type" property="videoType" />
+          <result column="file_type" property="fileType" />
+          <result column="content" property="content" />
+      </collection>
+  </resultMap>
+
+    <resultMap id="CourseCatalogResultMap_single" type="com.api.model.teaching.kpoint.CourseCatalog">
+        <result column="CATALOG_ID" property="catalogId" />
+        <result column="COURSE_ID" property="courseId" />
+        <result column="catalog_name" property="catalogName" />
+        <result column="ADD_TIME" property="addTime" />
+        <result column="SORT" property="sort" />
+    </resultMap>
+  <parameterMap id="CourseCatalog" type="com.api.model.teaching.kpoint.CourseCatalog" />
+
+  <sql id="CourseCatalog_Column_List">CATALOG_ID, COURSE_ID, catalog_name,ADD_TIME,SORT</sql>
+
+  <insert id="addCourseCatalog" parameterMap="CourseCatalog">
+      /*  获取插入后的主键id*/
+      <selectKey resultType="int" keyProperty="catalogId" order="AFTER" >
+          SELECT LAST_INSERT_ID() AS catalogId
+      </selectKey>
+    insert into COURSE_CATALOG
+        (COURSE_ID, catalog_name,ADD_TIME,SORT)
+    values
+        (#{courseId}, #{catalogName},#{addTime},#{sort})
+  </insert>
+
+  <!--<select id="courseKpointList" resultMap="CourseKpointResultMap">
+    SELECT
+    <include refid="CourseKpoint_Column_List" />
+    FROM course_kpoint WHERE 1=1
+      <if test="courseId != null and courseId!=''">
+          and course_id=#{courseId}
+      </if>
+      <if test="courseName != null and courseName!=''">
+          AND course_name LIKE '%${courseName}%'
+      </if>
+      <if test="subjectId != null and subjectId!=''">
+          and subject_id=#{subjectId}
+      </if>
+      <if test="addTime != null and addTime!=''">
+          and add_ime <![CDATA[ >= ]]> #{addTime}
+      </if>
+  </select>-->
+
+    <select id="findCourseCatalog" parameterType="java.lang.Integer" resultMap="CourseCatalogResultMap">
+      SELECT
+       t1.*,t2.*
+      FROM COURSE_CATALOG t1 LEFT JOIN COURSE_KPOINT t2
+        ON t1.catalog_id = t2.parent_id where t1.COURSE_ID=#{id}
+    </select>
+
+   <delete id="deleteCourseCatalog" parameterType="java.lang.Integer">
+        DELETE FROM COURSE_CATALOG WHERE CATALOG_ID=#{catalogId}
+    </delete>
+
+
+    <update id="updateCourseCatalog" parameterMap="CourseCatalog">
+        UPDATE COURSE_CATALOG
+        <trim prefix="set" suffixOverrides=",">
+            <if test="catalogName!=null">catalog_name=#{catalogName},</if>
+            <if test="sort!=null">sort=#{sort},</if>
+        </trim>
+        WHERE catalog_id=#{catalogId}
+    </update>
+
+    <select id="findCatalog"  parameterType="java.lang.Integer" resultMap="CourseCatalogResultMap_single">
+        SELECT
+        <include refid="CourseCatalog_Column_List" />
+        FROM course_catalog WHERE catalog_id=#{catalogId}
+    </select>
+    <!-- <select id="findParentId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT KPOINT_ID FROM COURSE_KPOINT WHERE PARENT_ID = #{courseKpointId}
+    </select>
+    <update id="updateCourseKpoint" parameterMap="CourseKpoint">
+        UPDATE COURSE_KPOINT
+        <trim prefix="set" suffixOverrides=",">
+            <if test="courseId!=null">course_id=#{courseId},</if>
+            <if test="name!=null">name=#{name},</if>
+            <if test="parentId!=null">parent_id=#{parentId},</if>
+            <if test="sort!=null">sort=#{sort},</if>
+            <if test="videoUrl!=null">video_url=#{videoUrl},</if>
+            <if test="teacherId!=null">teacher_id=#{teacherId},</if>
+            <if test="kpointType!=null">kpoint_type=#{kpointType},</if>
+            <if test="fileType!=null">file_type=#{fileType},</if>
+            <if test="content!=null">content=#{content}</if>
+        </trim>
+        WHERE kpoint_id=#{kpointId}
+    </update>
+
+   -->
+</mapper>

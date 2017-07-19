@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.system.MsgReceiveMapper">
+
+    <resultMap id="MsgReceiveResultMap" type="com.api.model.system.letter.MsgReceive">
+        <result column="id" property="id" />
+        <result column="cus_id" property="cusId" />
+        <result column="content" property="content" />
+        <result column="receiving_cus_id" property="receivingCusId" />
+        <result column="add_time" property="addTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="type" property="type" />
+        <result column="status" property="status" />
+        <result column="group_id" property="groupId" />
+        <result column="showname" property="showname" />
+    </resultMap>
+    <parameterMap id="MsgReceive" type="com.api.model.system.letter.MsgReceive" />
+
+    <sql id="MsgReceive_Column_List">id, cus_id, content, receiving_cus_id,add_time,update_time, type, status, group_id,showname</sql>
+
+    <select id="selectAddMsgSystem" resultMap="MsgReceiveResultMap" parameterMap="MsgReceive">
+        SELECT
+        <include refid="MsgReceive_Column_List" />
+        FROM msg_receive
+
+    </select>
+
+    <update id="updateAllMsgSystem" parameterMap="MsgReceive">
+        UPDATE msg_receive
+        <trim prefix="set" suffixOverrides=",">
+            <if test="courseName!=null">course_name=#{courseName},</if>
+            <if test="subjectId!=null and subjectId!=''">subject_id=#{subjectId},</if>
+            <if test="title!=null">title=#{title},</if>
+            <if test="context!=null">context=#{context},</if>
+            <if test="lessionNum!=null">lession_num=#{lessionNum},</if>
+            <if test="sequence!=null">sequence=#{sequence}</if>
+        </trim>
+        WHERE COURSE_ID=#{courseId}
+    </update>
+
+    <insert id="insertAllMsgSystem" parameterMap="MsgReceive">
+        insert into msg_receive
+        (cus_id, content,receiving_Cus_id,add_time,update_time,type,status,group_id,showname)
+        values
+        (#{cusId}, #{content},#{receivingCusId},now(),#{updateTime},#{type},#{status},#{groupId},#{showname})
+    </insert>
+</mapper>

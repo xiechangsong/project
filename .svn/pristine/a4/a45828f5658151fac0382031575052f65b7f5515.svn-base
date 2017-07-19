@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.teacher.ClassInfoMapper">
+
+  <resultMap id="ClassResultMap" type="com.api.model.system.teacher.ClassInfo">
+    <result column="class_id" property="classId" />
+    <result column="class_name" property="className" />
+    <result column="create_time" property="createTime" />
+    <result column="preset_number" property="presetNumber" />
+      <result column="profile" property="profile" />
+      <result column="status" property="status" />
+  </resultMap>
+  <parameterMap id="Class" type="com.api.model.system.teacher.ClassInfo" />
+
+  <sql id="Class_Column_List">class_id, class_name, create_time,preset_number,profile,status</sql>
+
+  <insert id="addClass" parameterMap="Class">
+    insert into CLASS_INFO
+        (class_name, create_time,preset_number,profile,status)
+    values
+        (#{className}, #{createTime},#{presetNumber},#{profile},#{status})
+  </insert>
+
+  <select id="classList" parameterMap="Class" resultMap="ClassResultMap">
+    SELECT
+    <include refid="Class_Column_List" />
+    FROM CLASS_INFO WHERE 1=1
+      <if test="classId != null and classId!=''">
+          and class_id=#{classId}
+      </if>
+      <if test="className != null and className!=''">
+          AND CLASS_NAME LIKE '%${className}%'
+      </if>
+      <if test="status != null and status!=''">
+          and status=#{status}
+      </if>
+      <if test="createTime != null and createTime!=''">
+          and create_time &gt;= #{createTime}
+      </if>
+  </select>
+
+  <select id="findClass" parameterType="java.lang.Integer" resultMap="ClassResultMap">
+    SELECT
+    <include refid="Class_Column_List" />
+    FROM CLASS_INFO WHERE CLASS_ID=#{id}
+  </select>
+
+  <delete id="deleteClass" parameterType="java.lang.Integer">
+     DELETE FROM CLASS_INFO WHERE CLASS_ID=#{id}
+   </delete>
+
+<update id="updateClass" parameterMap="Class">
+    UPDATE CLASS_INFO
+    <trim prefix="set" suffixOverrides=",">
+      <if test="className!=null">class_name=#{className},</if>
+        <if test="presetNumber!=null">preset_number=#{presetNumber},</if>
+        <if test="profile!=null">profile=#{profile}</if>
+    </trim>
+    WHERE class_id=#{classId}
+  </update>
+
+
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.system.TeachesrMapper">
+
+  <resultMap id="TeacherResultMap" type="com.api.model.teaching.teacher.Teacher">
+    <result column="id" property="id" />
+    <result column="real_name" property="realName" />
+    <result column="profile" property="profile" />
+    <result column="pic_path" property="picPath" />
+    <result column="status" property="status" />
+    <result column="create_time" property="createTime" />
+    <result column="sort" property="sort" />
+  </resultMap>
+  <parameterMap id="Teacher" type="com.api.model.teaching.teacher.Teacher" />
+
+  <sql id="Teacher_Column_List">ID,REAL_NAME,PROFILE,PIC_PATH,STATUS,CREATE_TIME,SORT</sql>
+  <insert id="addTeacher" parameterMap="Teacher">
+    insert into teacher
+        (real_name, profile, pic_path, status,create_time,sort,user_id)
+    values
+        (#{realName,jdbcType=VARCHAR}, #{profile,jdbcType=VARCHAR},#{picPath,jdbcType=VARCHAR},#{status},#{createTime},#{sort},#{userId})
+  </insert>
+
+  <select id="teacherList" parameterType="java.lang.String" resultMap="TeacherResultMap">
+    SELECT
+    <include refid="Teacher_Column_List" />
+    FROM TEACHER WHERE 1=1
+    <if test="_parameter != null and _parameter!=''">
+      AND REAL_NAME LIKE '%${_parameter}%'
+    </if>
+  </select>
+
+  <select id="findTeacher" parameterType="java.lang.Integer" resultMap="TeacherResultMap">
+    SELECT
+    <include refid="Teacher_Column_List" />
+    FROM TEACHER WHERE id=#{id}
+  </select>
+  <update id="updateTeacher" parameterType="com.api.model.teaching.teacher.Teacher">
+    UPDATE TEACHER
+    <trim prefix="set" suffixOverrides=",">
+      <if test="realName!=null">real_name=#{realName},</if>
+      <if test="profile!=null">profile=#{profile},</if>
+      <if test="picPath!=null">pic_path=#{picPath},</if>
+      <if test="status!=null">status=#{status},</if>
+      <if test="createTime!=null">create_time=#{createTime},</if>
+      <if test="sort!=null">sort=#{sort},</if>
+    </trim>
+    WHERE id=#{id}
+  </update>
+
+</mapper>

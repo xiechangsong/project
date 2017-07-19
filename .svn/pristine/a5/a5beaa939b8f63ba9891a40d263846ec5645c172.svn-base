@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/db_practical_training_v1_0_0?useUnicode=true&characterEncoding=utf8
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  logging:
+    config: classpath:logback-spring.xml    #日志配置文件路径
+  debug: true
+  http:
+    multipart:
+      max-file-size: 50MB #单个上传文件最大文件大小
+      max-request-size: 200MB #单次允许最大上传文件大小
+mybatis:
+  config-location: classpath:mapper-config.xml
+  type-aliases-package: com.api.model.*
+server:
+  port: 8080
+  context-path: /service-api

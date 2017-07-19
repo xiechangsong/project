@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.system.SysUserOperationMapper">
+
+    <resultMap id="SysUserOperationResultMap" type="com.api.model.teaching.system.SysUserOperation">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="operation" property="operation" />
+        <result column="time" property="time" />
+        <result column="remarks" property="remarks" />
+    </resultMap>
+    <parameterMap id="SysUserOperation" type="com.api.model.teaching.system.SysUserOperation" />
+
+    <sql id="SysUserOperation_Column_List">id, name, type, operation,time,remarks</sql>
+
+    <select id="selectSysUserOperation" resultMap="SysUserOperationResultMap" parameterMap="SysUserOperation">
+        SELECT
+        <include refid="SysUserOperation_Column_List" />
+        FROM sys_user_operation
+
+    </select>
+
+    <insert id="addSysUserOperation" parameterMap="SysUserOperation">
+        insert into sys_user_operation
+        (name, type, operation,time,remarks)
+        values
+        (#{name},#{type},#{operation},now(),#{remarks})
+    </insert>
+</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.teacher.ExaminationQuestionsMapper">
+
+    <resultMap id="ExaminationQuestionsResultMap" type="com.api.model.teaching.examination.ExaminationQuestions">
+        <result column="id" property="id" />
+        <result column="questions_type" property="questionsType" />
+        <result column="subject_id" property="subjectId" />
+        <result column="difficulty" property="difficulty" />
+        <result column="questions_title" property="questionsTitle" />
+          <result column="questions_option" property="questionsOption" />
+          <result column="correct" property="correct" />
+          <result column="answer_analysis" property="answerAnalysis" />
+          <result column="add_time" property="addTime" />
+            <association property="subject" column="subject_id" javaType="com.api.model.system.subject.Subject">
+            <id property="subjectId" column="subject_id"/>
+            <result property="subjectName" column="subject_name"/>
+            </association>
+    </resultMap>
+
+    <parameterMap id="ExaminationQuestions" type="com.api.model.teaching.examination.ExaminationQuestions" />
+
+    <sql id="ExaminationQuestions_Column_List">id, questions_type, subject_id,difficulty,questions_title,questions_option,correct,answer_analysis,add_time</sql>
+
+    <insert id="addExaminationQuestions" parameterMap="ExaminationQuestions">
+        /*  获取插入后的主键id*/
+        <selectKey resultType="int" keyProperty="id" order="AFTER" >
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    insert into examination_questions
+        (questions_type, subject_id,difficulty,questions_title,questions_option,correct,answer_analysis,add_time)
+    values
+        (#{questionsType},#{subjectId}, #{difficulty},#{questionsTitle},#{questionsOption},#{correct},#{answerAnalysis},#{addTime})
+  </insert>
+
+    <select id="searchExaminationQuestionsList" parameterMap="ExaminationQuestions" resultMap="ExaminationQuestionsResultMap">
+        SELECT
+        e.*,s.*
+        FROM examination_questions e INNER JOIN subject s on e.subject_id=s.subject_id
+        WHERE 1=1
+        <if test="id != null and id!=''">
+            and e.id=#{id}
+        </if>
+        <if test="questionsTitle != null and questionsTitle!=''">
+            AND e.questions_title LIKE '%${questionsTitle}%'
+        </if>
+        <if test="subjectId != null and subjectId!=''">
+            and e.subject_id=#{subjectId}
+        </if>
+        <if test="questionsType != null and questionsType!=''">
+            AND e.questions_type LIKE '%${questionsType}%'
+        </if>
+        <if test="difficulty != null and difficulty!=''">
+            and e.difficulty=#{difficulty}
+        </if>
+    </select>
+
+    <!--批量删除-->
+    <delete id="deleteExaminationQuestions" parameterType="java.util.List">
+        DELETE FROM examination_questions
+        WHERE id IN
+        <foreach item="examId" collection="list" open="(" close=")" separator=",">
+            #{examId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.system.MsgSystemMapper">
+
+  <resultMap id="MsgReceiveResultMap" type="com.api.model.system.letter.MsgSystem">
+        <result column="id" property="id" />
+        <result column="add_time" property="addTime" />
+        <result column="add_time_str" property="addTimeStr" />
+        <result column="content" property="content" />
+        <result column="end_time" property="endTime" />
+        <result column="status" property="status" />
+        <result column="update_time" property="updateTime" />
+  </resultMap>
+  <parameterMap id="MsgReceive" type="com.api.model.system.letter.MsgSystem" />
+
+    <select id="selectMsgSystem" resultMap="MsgReceiveResultMap">
+        SELECT
+        id,add_time,add_time_str,content,end_time,status,update_time
+        FROM msg_system where status=0 and end_time > now()
+    </select>
+
+    <insert id="addMsgSystem" parameterType="com.api.model.system.letter.MsgSystem">
+        insert into msg_system
+        ( add_time,content,end_time,status,update_time,add_time_str)
+        values
+        (now(), #{content},#{endTime},#{status},#{updateTime},#{addTimeStr})
+    </insert>
+</mapper>
