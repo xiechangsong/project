@@ -14,9 +14,16 @@ public interface MsgReceiveMapper {
     /**
      * 多用户查询
      */
-    public List<MsgReceive> selectAddMsgSystem(List<MsgReceive> msgReceive);
+    public List<MsgReceive> selectAddMsgReceive(MsgReceive msgReceive);
     /**
      * 添加消息
      */
-    public void insertAllMsgSystem(MsgReceive msgReceive);
+    public void insertAllMsgReceive(MsgReceive msgReceive);
+
+    /**
+     * 批量删除
+     * @param idList
+     */
+    public   void deleteMsgReceive(List<Integer> idList);
+
 }

@@ -17,11 +17,11 @@
     <update id="updateSysUser" parameterType="com.api.model.teaching.system.SysUser">
         UPDATE sys_user
         <trim prefix="set" suffixOverrides=",">
-            <if test="email!=null">email=#{email},</if>
-            <if test="loginPwd!=null">login_pwd=#{loginPwd},</if>
+            <if test="email!=null and email!=''">email=#{email},</if>
+            <if test="loginPwd!=null and passWord!=''">login_pwd=#{loginPwd},</if>
             <if test="status!=null">status=#{status},</if>
-            <if test="tel!=null">tel=#{tel},</if>
-            <if test="loginName!=null">user_name=#{loginName}</if>
+            <if test="tel!=null and tel!=''">tel=#{tel},</if>
+            <if test="loginName!=null and loginName!=''">user_name=#{loginName}</if>
         </trim>
         WHERE user_id=#{userId};
     </update>

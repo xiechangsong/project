@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.teacher.ImagesMapper">
+
+    <resultMap id="ImagesResultMap" type="com.api.model.system.letter.Images">
+        <result column="image_id" property="imageId" />
+        <result column="image_url" property="imageUrl" />
+        <result column="link_address" property="linkAddress" />
+        <result column="title" property="title" />
+        <result column="type" property="type" />
+        <result column="series_number" property="seriesNumber" />
+        <result column="preview_url" property="previewUrl" />
+        <result column="color" property="color" />
+        <result column="describes" property="describes" />
+    </resultMap>
+    <parameterMap id="Images" type="com.api.model.system.letter.Images" />
+
+    <sql id="Images_Column_List">image_id,image_url,link_address,title,type,series_number,preview_url,color,describes</sql>
+
+    <insert id="addImages" parameterMap="Images">
+        insert into images (link_address,title,type,series_number,preview_url,color,describes,image_url)
+        values
+        (#{linkAddress},#{title},#{type},#{seriesNumber},#{previewUrl},#{color},#{describes},#{imageUrl})
+    </insert>
+
+    <select id="selectImages" parameterType="java.util.List" resultMap="ImagesResultMap">
+        SELECT
+        <include refid="Images_Column_List" />
+        FROM images WHERE  1=1
+        <if test="title != null and title!=''">
+            AND title = #{title}
+        </if>
+        <if test="imageId != null and imageId!='' ">
+            AND image_id = #{imageId}
+        </if>
+        <if test="type != null and type!=''">
+            AND type = #{type}
+        </if>
+        <if test="describes != null and describes!=''">
+            AND describes = #{describes}
+        </if>
+        <if test="seriesNumber != null and seriesNumber!=''">
+            AND series_number = #{seriesNumber}
+        </if>
+        <if test="imageUrl != null and imageUrl!=''">
+            and image_url &gt;= #{imageUrl}
+        </if>
+        order by image_id desc
+    </select>
+
+    <select id="selectByImages" parameterType="java.util.List" resultMap="ImagesResultMap">
+        SELECT
+        <include refid="Images_Column_List" />
+        FROM images WHERE  image_id = #{imageId}
+
+    </select>
+
+
+    <update id="updateImages" parameterMap="Images">
+        UPDATE images
+        <trim prefix="set" suffixOverrides=",">
+            <if test="imageUrl!=null">image_url=#{imageUrl},</if>
+            <if test="title!=null">title=#{title},</if>
+            <if test="type!=null">type=#{type},</if>
+            <if test="seriesNumber!=null">series_number=#{seriesNumber},</if>
+            <if test="describes!=null">describes=#{describes},</if>
+        </trim>
+        WHERE image_id = #{imageId}
+    </update>
+
+    <delete id="deleteImages" parameterType="java.lang.Integer">
+        DELETE FROM images WHERE image_id=#{imageId}
+    </delete>
+</mapper>

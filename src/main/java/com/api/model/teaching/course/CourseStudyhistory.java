@@ -27,9 +27,9 @@ public class CourseStudyhistory implements Serializable {
 	@Id
 	@GeneratedValue
     private Long id;
-    private Long userId;//播放次数
-    private Long courseId;//播放次数
-    private Long kpointId;//播放次数
+    private Long userId;//用户ID
+    private Long courseId;//课程ID
+    private Long kpointId;//节点ID
     private Long playercount;//播放次数
     private String courseName;//课程名称
     private String kpointName;//节点名称

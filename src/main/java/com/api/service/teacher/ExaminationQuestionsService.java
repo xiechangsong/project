@@ -16,17 +16,31 @@ public class ExaminationQuestionsService {
     @Autowired
     private ExaminationQuestionsMapper examinationQuestionsMapper;
 
-    /***添加试题*/
-    public void addExaminationQuestions (ExaminationQuestions examinationQuestions,String[] answer) {
-        StringBuilder sb=new StringBuilder();
-        for (int i=0;i<answer.length;i++) {
-            sb.append(answer[i]);
-            if(i != answer.length - 1) {
-                sb.append(",");
+    /**
+     * 将客户端传过来的答案组成特定的格式
+     * @param answer
+     * @return
+     */
+    public String splitAnswer (String[] answer){
+        if ( answer.length > 0 ) {
+            StringBuilder sb=new StringBuilder();
+            for (int i=0;i<answer.length;i++) {
+                sb.append(answer[i]);
+                if(i != answer.length - 1) {
+                    sb.append(",");
+                }
             }
+            return sb.toString();
         }
-        examinationQuestions.setQuestionsOption(sb.toString());
+        return null;
+    }
+
+    /***添加试题*/
+    public void addExaminationQuestions (ExaminationQuestions examinationQuestions,String answer) {
+
+        examinationQuestions.setQuestionsOption(answer);
         examinationQuestions.setAddTime(new Date());
+        examinationQuestions.setStatus(0);
         examinationQuestionsMapper.addExaminationQuestions(examinationQuestions);
     }
 
@@ -41,5 +55,11 @@ public class ExaminationQuestionsService {
 
    public void deleteExaminationQuestions (List<Integer> idList) {
        examinationQuestionsMapper.deleteExaminationQuestions(idList);
+   }
+   /**修改*/
+   public void updateExaminationQuestions(ExaminationQuestions examinationQuestions,String answer) {
+
+       examinationQuestions.setQuestionsOption(answer);
+       examinationQuestionsMapper.updateExaminationQuestions(examinationQuestions);
     }
 }

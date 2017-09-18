@@ -1,8 +1,11 @@
 package com.api.model.teaching.system;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.util.Date;
 
 /**
@@ -22,7 +25,16 @@ public class SysUserOperation {
     /**备注信息*/
     private String remarks;
     /**操作时间*/
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date time;
+    /**开始操作时间*/
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @Transient
+    private  Date beginTime;
+    /**结束操作时间*/
+    @Transient
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private  Date endTime;
     public int getId() {
         return id;
     }
@@ -69,5 +81,21 @@ public class SysUserOperation {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 }

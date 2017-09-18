@@ -16,29 +16,11 @@ public class Praise  implements Serializable{
 	private static final long serialVersionUID = 7687324559966427231L;
 	@Id
 	@GeneratedValue
-	private Long id;//id
-	private Long userId;//用户id
-	private Long targetId;//点赞的目标id
+	private int id;//id
+	private int userId;//用户id
+	private int targetId;//点赞的目标id
 	private int type;//点赞类型 1问答点赞 2问答评论点赞
 	private Date addTime;//点赞和点踩的时间
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public Long getUserId() {
-		return userId;
-	}
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-	public Long getTargetId() {
-		return targetId;
-	}
-	public void setTargetId(Long targetId) {
-		this.targetId = targetId;
-	}
 	public int getType() {
 		return type;
 	}
@@ -51,8 +33,26 @@ public class Praise  implements Serializable{
 	public void setAddTime(Date addTime) {
 		this.addTime = addTime;
 	}
-	
-	
-	
+	public int getTargetId() {
+		return targetId;
+	}
+	public void setTargetId(int targetId) {
+		this.targetId = targetId;
+	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 }

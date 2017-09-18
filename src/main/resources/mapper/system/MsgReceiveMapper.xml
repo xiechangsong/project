@@ -18,30 +18,37 @@
 
     <sql id="MsgReceive_Column_List">id, cus_id, content, receiving_cus_id,add_time,update_time, type, status, group_id,showname</sql>
 
-    <select id="selectAddMsgSystem" resultMap="MsgReceiveResultMap" parameterMap="MsgReceive">
+    <select id="selectAddMsgReceive" resultMap="MsgReceiveResultMap" parameterMap="MsgReceive">
         SELECT
         <include refid="MsgReceive_Column_List" />
         FROM msg_receive
-
+        WHERE 1=1
+        <if test="id != null and id!=''">
+            and id=#{id}
+        </if>
+        <if test="receivingCusId != null and receivingCusId!=''">
+            and receiving_cus_id=#{receivingCusId}
+        </if>
+        <if test="status != null and status!=''">
+            and status=#{status}
+        </if>
     </select>
 
-    <update id="updateAllMsgSystem" parameterMap="MsgReceive">
-        UPDATE msg_receive
-        <trim prefix="set" suffixOverrides=",">
-            <if test="courseName!=null">course_name=#{courseName},</if>
-            <if test="subjectId!=null and subjectId!=''">subject_id=#{subjectId},</if>
-            <if test="title!=null">title=#{title},</if>
-            <if test="context!=null">context=#{context},</if>
-            <if test="lessionNum!=null">lession_num=#{lessionNum},</if>
-            <if test="sequence!=null">sequence=#{sequence}</if>
-        </trim>
-        WHERE COURSE_ID=#{courseId}
-    </update>
 
-    <insert id="insertAllMsgSystem" parameterMap="MsgReceive">
+    <insert id="insertAllMsgReceive" parameterMap="MsgReceive">
         insert into msg_receive
         (cus_id, content,receiving_Cus_id,add_time,update_time,type,status,group_id,showname)
         values
         (#{cusId}, #{content},#{receivingCusId},now(),#{updateTime},#{type},#{status},#{groupId},#{showname})
     </insert>
+
+
+    <!--批量删除-->
+    <delete id="deleteMsgReceive" parameterType="java.util.List">
+        DELETE FROM msg_receive
+        WHERE id IN
+        <foreach item="examId" collection="list" open="(" close=")" separator=",">
+            #{examId}
+        </foreach>
+    </delete>
 </mapper>

@@ -31,4 +31,20 @@ public class MsgSystemService {
    public  void addMsgSystem(MsgSystem msgSystem){
         msgSystemMapper.addMsgSystem(msgSystem);
     }
+
+    /** 修改一条系统信息 */
+    public void updateMsgSystem(MsgSystem msgSystem){
+        msgSystemMapper.updateMsgSystem(msgSystem);
+    };
+
+    /** 删除一条消息记录 */
+    public void deleteMsgSystem(int id){
+        msgSystemMapper.deleteMsgSystem(id);
+    };
+
+    /**管理员查看系统消息*/
+    public List<MsgSystem> selectByMsgSystem(MsgSystem msgSystem){
+        List<MsgSystem> list = msgSystemMapper.selectByMsgSystem(msgSystem);
+        return  list;
+    }
 }

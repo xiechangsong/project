@@ -1,6 +1,8 @@
 package com.api.aspect;
 
 import com.github.pagehelper.PageHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,9 +13,10 @@ import java.util.Properties;
  */
 @Configuration
 public class MybatisConf {
+    private final static Logger logger= LoggerFactory.getLogger(MybatisConf.class);
     @Bean
     public PageHelper pageHelper() {
-        System.out.println("MyBatisConfiguration.pageHelper()");
+        logger.info("MyBatisConfiguration.pageHelper() runing...........");
         PageHelper pageHelper = new PageHelper();
         Properties p = new Properties();
         p.setProperty("offsetAsPageNum", "true");

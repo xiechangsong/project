@@ -1,10 +1,14 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/db_practical_training_v1_0_0?useUnicode=true&characterEncoding=utf8
-     ##jdbc:mysql://1rm-wz91nd4j35a0z05iv.mysql.rds.aliyuncs.com:3306/db_practical_training_v1_0_0?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/db_practical_training_v1_0_0?useUnicode=true&characterEncoding=utf8
+    ##jdbc:mysql://rm-bp1ya9i5o75b8366uo.mysql.rds.aliyuncs.com:3306/db_practical_training_v1_0_0?useUnicode=true&characterEncoding=utf8
     username: root
-    password:
+    password: ##Zykj123!
+    test-on-borrow: true #获取连接时候验证，会影响性能
+    validation-query: SELECT 1 FROM DUAL
+    time-between-eviction-runs-millis: 300000 #空闲连接回收的时间间隔，与test-while-idle一起使用，设置5分钟
+    min-evictable-idle-time-millis: 1800000 #连接池空闲连接的有效时间 ，设置30分钟
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,11 +18,16 @@ spring:
   debug: true
   http:
     multipart:
-      max-file-size: 50MB #单个上传文件最大文件大小
-      max-request-size: 200MB #单次允许最大上传文件大小
+      max-file-size: 500MB #单个上传文件最大文件大小
+      max-request-size: 500MB #单次允许最大上传文件大小
+    encoding: #http参数编码
+      charset: utf-8
+      force: true
+      enabled: true
 mybatis:
   config-location: classpath:mapper-config.xml
   type-aliases-package: com.api.model.*
 server:
-  port: 8080
   context-path: /service-api
+  tomcat:
+    uri-encoding: UTF-8

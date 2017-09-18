@@ -24,5 +24,7 @@ public interface MsgSystemMapper {
     /** 删除一条消息记录 */
     void deleteMsgSystem(int id);
 
+    /** 查询所有系统消息 */
+    List<MsgSystem> selectByMsgSystem(MsgSystem msgSystem);
 
 }

@@ -2,58 +2,83 @@
 <!DOCTYPE mapper PUBLIC "-//mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.mapper.user.UserMapper">
 
-    <select id="findUserInfo" resultType="com.api.model.user.User">
-    select id, user_name, pass_word, email, phone, qq, sex, age, add_time,user_type from user;
-  </select>
-    <select id="findAll" resultType="com.api.model.user.User">
-    select id, user_name AS userName, pass_word AS passWord, email, phone, nick_name as nickName, sex, age, add_time AS addTime,user_type AS userType from user;
-  </select>
-    <select id="getUser" resultType="com.api.model.user.User" parameterType="java.lang.String">
-        select id, user_name AS userName, pass_word AS passWord, email, phone, nick_name as nickName, sex, age, add_time AS addTime,user_type AS userType from user where user_name=#{name}
+    <resultMap id="UserResultMap" type="com.api.model.user.User">
+        <result column="id" property="id" />
+        <result column="user_name" property="userName" />
+        <result column="pass_word" property="passWord" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+        <result column="sex" property="sex" />
+        <result column="age" property="age" />
+        <result column="add_time" property="addTime" />
+        <result column="user_type" property="userType" />
+        <result column="status" property="status" />
+        <result column="pic_path" property="pic_path" />
+    </resultMap>
+    <parameterMap id="User" type="com.api.model.user.User" />
+
+    <sql id="User_Column_List">id, user_name, pass_word, email, phone, sex, age, add_time,user_type,status,pic_path</sql>
+
+    <select id="findUserInfo"  parameterMap="User">
+        SELECT
+        <include refid="User_Column_List" />
+        FROM user
     </select>
-    <insert id="register" parameterType="com.api.model.user.User">
+    <select id="findAll" parameterMap="User">
+        SELECT
+        <include refid="User_Column_List" />
+        FROM user
+    </select>
+    <select id="getUser" parameterType="java.util.List" resultMap="UserResultMap">
+        SELECT
+        <include refid="User_Column_List" />
+        FROM user WHERE   user_name=#{name}
+    </select>
+
+    <insert id="register" parameterMap="User">
     /*  获取插入后的主键id*/
     <selectKey resultType="int" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID() AS id
     </selectKey>
-    insert into USER (user_name, pass_word,add_time,sex,email,phone,nick_name,age,user_type,real_name,status)
+    insert into USER (user_name, pass_word,add_time,sex,email,phone,nick_name,age,user_type,real_name,status,pic_path)
     values
-    (#{userName}, #{passWord},#{addTime},#{sex},#{email},#{phone},#{nickName},#{age},#{userType},#{realName},#{status})
+    (#{userName}, #{passWord},#{addTime},#{sex},#{email},#{phone},#{nickName},#{age},#{userType},#{realName},#{status},#{pic_path})
   </insert>
-    <update id="updateUser" parameterType="com.api.model.user.User">
+    <update id="updateUser" parameterMap="User">
     UPDATE user
     <trim prefix="set" suffixOverrides=",">
-      <if test="passWord!=null">pass_word=#{passWord},</if>
-      <if test="sex!=null">sex=#{sex},</if>
-      <if test="email!=null">email=#{email},</if>
-      <if test="phone!=null">phone=#{phone},</if>
-      <if test="nickName!=null">nick_name=#{nickName},</if>
+      <if test="passWord!=null and passWord!=''">pass_word=#{passWord},</if>
+      <if test="sex!=null and sex!=''">sex=#{sex},</if>
+      <if test="email!=null and email!=''">email=#{email},</if>
+      <if test="phone!=null and phone!=''">phone=#{phone},</if>
+      <if test="nickName!=null and nickName!=''">nick_name=#{nickName},</if>
       <if test="age!=null">age=#{age},</if>
       <if test="userType!=null">user_type=#{userType},</if>
       <if test="status!=null">status=#{status},</if>
-      <if test="realName!=null">real_name=#{realName},</if>
-      <if test="pic_path!=null">pic_path=#{pic_path},</if>
-      <if test="userType!=null">user_type=#{userType}</if>
+      <if test="realName!=null and realName!=''">real_name=#{realName},</if>
+      <if test="pic_path!=null and pic_path!=''">pic_path=#{pic_path},</if>
     </trim>
     WHERE id=#{id};
   </update>
-    <select id="selectUser" resultType="com.api.model.user.User">
-    SELECT id, user_name AS userName, pass_word AS passWord, email, phone,  nick_name as nickName, sex, age, add_time AS addTime,user_type AS userType,status
-    FROM user WHERE  1=1
+    <select id="selectUser" resultMap="UserResultMap">
+        SELECT
+        <include refid="User_Column_List" />
+        FROM user WHERE  1=1
 
-      <if test="userName != null">
+      <if test="userName != null  and userName!=''">
         AND `user_name` LIKE concat('%',#{userName},'%')
       </if>
-      <if test="email != null">
+      <if test="email != null  and email!=''">
         AND `email`LIKE concat('%', #{email},'%')
       </if>
 
     order by id desc
   </select>
-    <select id="studentList" resultType="com.api.model.user.User">
-        SELECT id, user_name AS userName, pass_word AS passWord, email, phone,  nick_name as nickName, sex, age, add_time AS addTime,user_type AS userType,status
-        FROM user WHERE  user_type=0
-        <if test="id != null and id!=''">
+    <select id="studentList" resultMap="UserResultMap">
+        SELECT
+        <include refid="User_Column_List" />
+        FROM user  WHERE  user_type=0
+        <if test="id != null">
             and id=#{id}
         </if>
         <if test="userName != null and userName!=''">
@@ -70,7 +95,7 @@
         </if>
     </select>
 
-  <select id="selectAll" resultType="com.api.model.user.User" >
+  <select id="selectAll" resultMap="UserResultMap" >
     SELECT id
     from user
     <where>

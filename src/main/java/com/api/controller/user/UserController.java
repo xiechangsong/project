@@ -7,6 +7,7 @@ import com.api.model.common.Result;
 import com.api.model.teaching.course.UserCourseList;
 import com.api.model.user.User;
 import com.api.service.user.UserService;
+import com.api.utils.Common;
 import com.api.utils.ReadExcel;
 import com.api.utils.ResultUtil;
 import com.github.pagehelper.Page;
@@ -86,6 +87,19 @@ public class UserController {
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     @ResponseBody
     public Result updateUser(User user) throws Exception {
+        userService.updateUser(user);
+        return ResultUtil.SUCCESS(ResultEnum.SUCCESS);
+    }
+    /**
+     * 修改
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/updateUserPicPath",method = RequestMethod.POST)
+    @ResponseBody
+    public Result updateUserPicPath(User user,HttpServletRequest request,@RequestParam("file") MultipartFile multipartFile) throws Exception {
+        String newFileName = Common.fileImg(multipartFile);
+        user.setPic_path(newFileName);
         userService.updateUser(user);
         return ResultUtil.SUCCESS(ResultEnum.SUCCESS);
     }

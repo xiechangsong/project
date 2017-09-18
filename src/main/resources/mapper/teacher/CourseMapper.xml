@@ -8,7 +8,7 @@
         <result column="SUBJECT_ID" property="subjectId" />
         <result column="ADD_TIME" property="addTime" />
         <result column="TITLE" property="title" />
-          <result column="CONTEXT" property="context" ></result>
+          <result column="CONTEXT" property="context" />
           <result column="LESSION_NUM" property="lessionNum" />
           <result column="SEQUENCE" property="sequence" />
           <result column="subject_name" property="subjectName" />
@@ -19,12 +19,7 @@
 
     <sql id="Course_Column_List">course_id, course_name, subject_id,add_time,title,context,lession_num,sequence,IS_RECOMMEND</sql>
 
-    <insert id="addCourseNote" parameterType="com.api.model.teaching.course.CourseNote">
-    insert into course_note
-        (user_id, course_id,kpoint_id,content,update_time,status,title)
-    values
-        (#{userId}, #{courseId},#{kpointId},#{content},now(),#{status},#{title})
-  </insert>
+
 
     <insert id="addCourse" parameterMap="Course">
         /*  获取插入后的主键id*/

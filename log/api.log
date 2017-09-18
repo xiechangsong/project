@@ -1,0 +1,24 @@
+2017-08-22 09:25:55,791 INFO (StartupInfoLogger.java:48)- Starting Application on IFEBIUG8DTWU7X6 with PID 9184 (D:\spring-boot\target\classes started by Administrator in D:\api)
+2017-08-22 09:25:55,793 DEBUG (StartupInfoLogger.java:51)- Running with Spring Boot v1.5.1.RELEASE, Spring v4.3.6.RELEASE
+2017-08-22 09:25:55,793 INFO (SpringApplication.java:637)- No active profile set, falling back to default profiles: default
+2017-08-22 09:29:09,836 INFO (StartupInfoLogger.java:48)- Starting Application on IFEBIUG8DTWU7X6 with PID 8580 (D:\spring-boot\target\classes started by Administrator in D:\api)
+2017-08-22 09:29:09,838 DEBUG (StartupInfoLogger.java:51)- Running with Spring Boot v1.5.1.RELEASE, Spring v4.3.6.RELEASE
+2017-08-22 09:29:09,838 INFO (SpringApplication.java:637)- No active profile set, falling back to default profiles: default
+2017-08-22 09:29:30,774 INFO (StartupInfoLogger.java:48)- Starting Application on IFEBIUG8DTWU7X6 with PID 7420 (D:\spring-boot\target\classes started by Administrator in D:\api)
+2017-08-22 09:29:30,775 DEBUG (StartupInfoLogger.java:51)- Running with Spring Boot v1.5.1.RELEASE, Spring v4.3.6.RELEASE
+2017-08-22 09:29:30,775 INFO (SpringApplication.java:637)- No active profile set, falling back to default profiles: default
+2017-08-22 09:30:59,506 INFO (StartupInfoLogger.java:48)- Starting Application on IFEBIUG8DTWU7X6 with PID 8164 (D:\spring-boot\target\classes started by Administrator in D:\api)
+2017-08-22 09:30:59,508 DEBUG (StartupInfoLogger.java:51)- Running with Spring Boot v1.5.1.RELEASE, Spring v4.3.6.RELEASE
+2017-08-22 09:30:59,508 INFO (SpringApplication.java:637)- No active profile set, falling back to default profiles: default
+2017-08-22 09:32:25,883 INFO (StartupInfoLogger.java:48)- Starting Application on IFEBIUG8DTWU7X6 with PID 6712 (D:\spring-boot\target\classes started by Administrator in D:\api)
+2017-08-22 09:32:25,884 DEBUG (StartupInfoLogger.java:51)- Running with Spring Boot v1.5.1.RELEASE, Spring v4.3.6.RELEASE
+2017-08-22 09:32:25,885 INFO (SpringApplication.java:637)- No active profile set, falling back to default profiles: default
+2017-08-22 09:54:51,758 INFO (StartupInfoLogger.java:48)- Starting Application on IFEBIUG8DTWU7X6 with PID 6876 (D:\spring-boot\target\classes started by Administrator in D:\api)
+2017-08-22 09:54:51,760 DEBUG (StartupInfoLogger.java:51)- Running with Spring Boot v1.5.1.RELEASE, Spring v4.3.6.RELEASE
+2017-08-22 09:54:51,760 INFO (SpringApplication.java:637)- No active profile set, falling back to default profiles: default
+2017-08-22 09:54:54,568 INFO (StartupInfoLogger.java:57)- Started Application in 2.952 seconds (JVM running for 3.315)
+2017-08-22 09:56:37,732 INFO (StartupInfoLogger.java:48)- Starting Application on IFEBIUG8DTWU7X6 with PID 9520 (D:\spring-boot\target\classes started by Administrator in D:\api)
+2017-08-22 09:56:37,734 DEBUG (StartupInfoLogger.java:51)- Running with Spring Boot v1.5.1.RELEASE, Spring v4.3.6.RELEASE
+2017-08-22 09:56:37,734 INFO (SpringApplication.java:637)- No active profile set, falling back to default profiles: default
+2017-08-22 09:56:40,340 INFO (StartupInfoLogger.java:57)- Started Application in 2.769 seconds (JVM running for 3.17)
+2017-08-22 09:56:40,340 INFO (Application.java:41)- =======================Runing Success=====================

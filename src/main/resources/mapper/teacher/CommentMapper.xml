@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.teacher.CommentMapper">
+
+    <resultMap id="CommentResultMap" type="com.api.model.teaching.common.Comment">
+        <result column="comment_id" property="commentId" />
+        <result column="user_id" property="userId" />
+        <result column="p_comment_id" property="pCommentId" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="add_time" property="addTime" />
+        <result column="other_id" property="otherId" />
+        <result column="praise_count" property="praiseCount" />
+        <result column="reply_count" property="replyCount" />
+        <result column="type" property="type" />
+        <result column="email" property="email" />
+        <result column="user_name" property="userName" />
+        <result column="course_name" property="courseName" />
+        <result column="course_id" property="courseId" />
+        <result column="pic_img" property="picImg" />
+        <result column="comment_number" property="commentNumber" />
+        <result column="limit_number" property="limitNumber" />
+        <result column="begin_create_time" property="beginCreateTime" />
+        <result column="end_create_time" property="endCreateTime" />
+    </resultMap>
+    <parameterMap id="Comment" type="com.api.model.teaching.common.Comment" />
+
+    <sql id="Comment_Column_List">title,comment_id,user_id,p_comment_id,content,add_time,other_id,praise_count,reply_count,type,email,user_name,course_id,pic_img,comment_number,limit_number,begin_create_time,end_create_time,course_name</sql>
+
+    <insert id="addComment" parameterMap="Comment">
+        insert into comment (title,user_id,p_comment_id,content,add_time,other_id,praise_count,reply_count,type,email,user_name,course_id,pic_img,comment_number,limit_number,begin_create_time,end_create_time,course_name)
+        values
+        (#{title},#{userId}, #{pCommentId},#{content},now(),#{otherId},#{praiseCount},#{replyCount},#{type},#{email},#{userName},#{courseId},#{picImg},#{commentNumber},#{limitNumber},#{beginCreateTime},#{endCreateTime},#{courseName})
+    </insert>
+
+    <select id="selectComment" parameterType="java.util.List" resultMap="CommentResultMap">
+        SELECT
+        <include refid="Comment_Column_List" />
+        FROM comment WHERE  1=1
+        <if test="courseName != null and courseName!=''">
+            AND course_name = #{courseName}
+        </if>
+        <if test="commentId != null ">
+            AND comment_id = #{commentId}
+        </if>
+        <if test="pCommentId != null">
+            AND comment_id = #{pCommentId}
+        </if>
+        <if test="type != null">
+            AND type = #{type}
+        </if>
+        <if test="beginCreateTime != null and beginCreateTime!=''">
+            and add_time &gt;= #{beginCreateTime}
+        </if>
+        <if test="endCreateTime != null and endCreateTime!=''">
+            and add_time &lt;= #{endCreateTime}
+        </if>
+        <if test="content != null and content!=''">
+            AND content LIKE concat('%',#{content},'%')
+        </if>
+        <if test="userName != null and userName!=''">
+            AND user_name = #{userName}
+        </if>
+        order by praise_count desc
+    </select>
+
+    <select id="selectCommentById"  parameterType="java.lang.Integer" resultMap="CommentResultMap">
+    SELECT
+    <include refid="Comment_Column_List" />
+    FROM comment WHERE comment_id = #{id}
+    </select>
+
+    <update id="updateComment" parameterMap="Comment">
+        UPDATE comment
+        <trim prefix="set" suffixOverrides=",">
+            <if test="content!=null">content=#{content},</if>
+            <if test="praiseCount!=null">praise_count=#{praiseCount},</if>
+            <if test="replyCount!=null">reply_count=#{replyCount},</if>
+            <if test="type!=null">type=#{type},</if>
+            <if test="title!=null">title=#{title},</if>
+            <if test="limitNumber!=null">limit_number=#{limitNumber},</if>
+        </trim>
+        WHERE comment_id = #{commentId}
+    </update>
+
+    <!--批量删除-->
+    <delete id="deleteComment" parameterType="java.util.List">
+        DELETE FROM comment
+        WHERE comment_id IN
+        <foreach item="examId" collection="list" open="(" close=")" separator=",">
+            #{examId}
+        </foreach>
+    </delete>
+</mapper>

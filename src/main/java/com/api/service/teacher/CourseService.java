@@ -2,7 +2,6 @@ package com.api.service.teacher;
 
 import com.api.mapper.teacher.CourseMapper;
 import com.api.model.teaching.course.Course;
-import com.api.model.teaching.course.CourseNote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +21,7 @@ public class CourseService {
         courseMapper.addCourse(course);
     }
 
-    public void addCourseNote (CourseNote courseNote) {
-        courseMapper.addCourseNote(courseNote);
-    }
+
     public List<Course> courseList (Course course) {
        List<Course> courses = courseMapper.courseList(course);
         return courses;

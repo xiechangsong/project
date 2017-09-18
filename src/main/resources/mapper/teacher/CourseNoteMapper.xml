@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.teacher.CourseNoteMapper">
+
+    <resultMap id="CourseNoteResultMap" type="com.api.model.teaching.course.CourseNote">
+        <result column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="kpoint_id" property="kpointId" />
+        <result column="course_id" property="courseId" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="update_time" property="updateTime" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <parameterMap id="CourseNote" type="com.api.model.teaching.course.CourseNote" />
+
+    <sql id="CourseNote_Column_List">id,user_id, kpoint_id, course_id,title,content,update_time,status</sql>
+
+    <insert id="addCourseNote" parameterType="com.api.model.teaching.course.CourseNote">
+            insert into course_note
+                (user_id, course_id,kpoint_id,content,update_time,status,title)
+            values
+                (#{userId}, #{courseId},#{kpointId},#{content},now(),#{status},#{title})
+    </insert>
+
+    <!--批量删除-->
+    <delete id="deleteCourseNote" parameterType="java.util.List">
+        DELETE FROM course_note
+        WHERE id IN
+        <foreach item="examId" collection="list" open="(" close=")" separator=",">
+            #{examId}
+        </foreach>
+    </delete>
+
+
+
+    <select id="selectCourseNoteList"  parameterType="java.util.List" resultMap="CourseNoteResultMap">
+        SELECT
+        <include refid="CourseNote_Column_List" />
+        FROM course_note
+        WHERE 1=1
+         <if test="courseId != null and courseId!=''">
+             and course_id=#{courseId}
+         </if>
+        <if test="kpointId != null and kpointId!=''">
+            and kpoint_id=#{kpointId}
+        </if>
+         <if test="userId != null and userId!=''">
+             and user_id=#{userId}
+         </if>
+         <if test="title != null and title!='' ">
+             and title == #{title}
+         </if>
+  </select>
+
+
+
+    <update id="updateCourseNote" parameterMap="CourseNote">
+        UPDATE course_note
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title!=null and title!=''">title=#{title},</if>
+            <if test="content!=null and content!=''">content=#{content},</if>
+            <if test="updateTime!=null and updateTime!=''">update_time=#{updateTime},</if>
+            <if test="status!=null and status!=''">sequence=#{sequence},</if>
+        </trim>
+        WHERE id=#{id}
+  </update>
+
+
+</mapper>

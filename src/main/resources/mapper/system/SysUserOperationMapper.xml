@@ -17,8 +17,20 @@
     <select id="selectSysUserOperation" resultMap="SysUserOperationResultMap" parameterMap="SysUserOperation">
         SELECT
         <include refid="SysUserOperation_Column_List" />
-        FROM sys_user_operation
+        FROM sys_user_operation where 1=1
 
+        <if test="name != null">
+            AND `name` LIKE concat('%',#{name},'%')
+        </if>
+        <if test="type != null">
+            AND `type`LIKE concat('%', #{type},'%')
+        </if>
+        <if test="beginTime != null and beginTime!=''">
+            and time &gt;= #{beginTime}
+        </if>
+        <if test="endTime != null and endTime!=''">
+            and time &lt;= #{endTime}
+        </if>
     </select>
 
     <insert id="addSysUserOperation" parameterMap="SysUserOperation">

@@ -37,11 +37,40 @@ public class MsgSystemController {
                 listCountry.getPages(),listCountry.getPageNum(),listCountry.getPageSize());
     }
 
+    @RequestMapping(value = "/msgSystem/selectByMsgSystem", method = RequestMethod.GET)
+    @ResponseBody
+    public Result selectByMsgSystem(MsgSystem msgSystem,@RequestParam(required = true, defaultValue = "1") Integer pageNum,
+                                @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+
+        PageHelper.startPage(pageNum, pageSize);
+
+        List<MsgSystem> list = msgSystemService.selectByMsgSystem(msgSystem);
+
+        Page<MsgSystem> listCountry = (Page<MsgSystem>)list;
+
+        return ResultUtil.SUCCESS(ResultEnum.SUCCESS, list,listCountry.getTotal(),
+                listCountry.getPages(),listCountry.getPageNum(),listCountry.getPageSize());
+    }
+
 
     @RequestMapping(value = "/msgSystem/addMsgSystem", method = RequestMethod.POST)
     @ResponseBody
     public Result addMsgSystem(MsgSystem msgSystem) {
         msgSystemService.addMsgSystem(msgSystem);
+        return ResultUtil.SUCCESS(ResultEnum.SUCCESS);
+    }
+
+    @RequestMapping(value = "/msgSystem/updateMsgSystem", method = RequestMethod.POST)
+    @ResponseBody
+    public Result updateMsgSystem(MsgSystem msgSystem) {
+        msgSystemService.updateMsgSystem(msgSystem);
+        return ResultUtil.SUCCESS(ResultEnum.SUCCESS);
+    }
+
+    @RequestMapping(value = "/msgSystem/deleteMsgSystem/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Result deleteMsgSystem(@PathVariable("id")int id) {
+        msgSystemService.deleteMsgSystem(id);
         return ResultUtil.SUCCESS(ResultEnum.SUCCESS);
     }
 }

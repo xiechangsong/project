@@ -8,13 +8,20 @@
     <result column="name" property="name" />
     <result column="parent_id" property="parentId" />
     <result column="add_time" property="addTime" />
-      <result column="sort" property="sort" ></result>
+      <result column="sort" property="sort" />
       <result column="video_url" property="videoUrl" />
       <result column="teacher_id" property="teacherId" />
       <result column="kpoint_types" property="kpointTypes" />
       <result column="video_type" property="videoType" />
       <result column="file_type" property="fileType" />
       <result column="content" property="content" />
+      <result column="paper_id" property="paperId" />
+      <result column="test_typr" property="testType" />
+      <result property="paperName" column="paper_name"/>
+    <!--  <association property="testPaper" column="paper_id" javaType="com.api.model.teaching.examination.TestPaper">
+          <id property="id" column="id"/>
+          <result property="paperName" column="paper_name"/>
+      </association>-->
   </resultMap>
     <select id="selectCourseKpointChildList" parameterType="java.lang.Integer" resultMap="CourseKpointResultMap">
         SELECT
@@ -23,7 +30,7 @@
     </select>
   <parameterMap id="CourseKpoint" type="com.api.model.teaching.kpoint.CourseKpoint" />
 
-  <sql id="CourseKpoint_Column_List">kpoint_id, course_id, name,parent_id,add_time,sort,video_url,teacher_id,kpoint_types,video_type,file_type,content</sql>
+  <sql id="CourseKpoint_Column_List">kpoint_id, course_id, name,parent_id,add_time,sort,video_url,teacher_id,kpoint_types,video_type,file_type,content,paper_id,test_type</sql>
 
   <insert id="addCourseKpoint" parameterMap="CourseKpoint">
       /*  获取插入后的主键id*/
@@ -31,28 +38,11 @@
           SELECT LAST_INSERT_ID() AS kpointId
       </selectKey>
     insert into course_kpoint
-        (course_id, name,parent_id,add_time,sort,video_url,teacher_id,kpoint_types,video_type,file_type,content)
+        (course_id, name,parent_id,add_time,sort,video_url,teacher_id,kpoint_types,video_type,file_type,content,paper_id,test_type)
     values
-        (#{courseId}, #{name},#{parentId},#{addTime},#{sort},#{videoUrl},#{teacherId},#{kpointTypes},#{videoType},#{fileType},#{content})
+        (#{courseId}, #{name},#{parentId},#{addTime},#{sort},#{videoUrl},#{teacherId},#{kpointTypes},#{videoType},#{fileType},#{content},#{paperId},#{testType})
   </insert>
 
-  <!--<select id="courseKpointList" resultMap="CourseKpointResultMap">
-    SELECT
-    <include refid="CourseKpoint_Column_List" />
-    FROM course_kpoint WHERE 1=1
-      <if test="courseId != null and courseId!=''">
-          and course_id=#{courseId}
-      </if>
-      <if test="courseName != null and courseName!=''">
-          AND course_name LIKE '%${courseName}%'
-      </if>
-      <if test="subjectId != null and subjectId!=''">
-          and subject_id=#{subjectId}
-      </if>
-      <if test="addTime != null and addTime!=''">
-          and add_ime <![CDATA[ >= ]]> #{addTime}
-      </if>
-  </select>-->
 
     <select id="findCourseKpoint" parameterType="java.lang.Integer" resultMap="CourseKpointResultMap">
       SELECT
@@ -89,15 +79,16 @@
             <if test="teacherId!=null">teacher_id=#{teacherId},</if>
             <if test="kpointTypes!=null">kpoint_types=#{kpointTypes},</if>
             <if test="fileType!=null">file_type=#{fileType},</if>
-            <if test="content!=null">content=#{content}</if>
+            <if test="paperId!=null">paper_id=#{paperId},</if>
+            <if test="testType!=null">test_type=#{testType},</if>
         </trim>
         WHERE kpoint_id=#{kpointId}
     </update>
 
     <select id="courseKpoints"  parameterType="java.lang.Integer" resultMap="CourseKpointResultMap">
         SELECT
-        <include refid="CourseKpoint_Column_List" />
-        FROM course_kpoint WHERE kpoint_id=#{kpointId}
+       k.*,t.paper_name as paperName
+        FROM course_kpoint k LEFT JOIN test_paper t on k.paper_id=t.id WHERE k.kpoint_id=#{kpointId}
 
     </select>
 </mapper>

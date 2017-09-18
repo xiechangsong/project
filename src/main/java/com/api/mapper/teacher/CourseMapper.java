@@ -1,7 +1,6 @@
 package com.api.mapper.teacher;
 
 import com.api.model.teaching.course.Course;
-import com.api.model.teaching.course.CourseNote;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +12,7 @@ import java.util.List;
 public interface CourseMapper {
     /** 添加课程 */
     void addCourse (Course course);
-    /** 添加手记 */
-    void addCourseNote (CourseNote courseNote);
+
 
     List<Course> courseList(Course course);
 

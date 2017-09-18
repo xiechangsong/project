@@ -16,12 +16,16 @@ public class MsgReceiveService {
     @Autowired
     private MsgReceiveMapper msgReceiveMapper;
 
-    public List<MsgReceive> selectAddMsgSystem(List<MsgReceive> msgReceive){
-        List<MsgReceive> list = msgReceiveMapper.selectAddMsgSystem(msgReceive);
+    public List<MsgReceive> selectAddMsgReceive(MsgReceive msgReceive){
+        List<MsgReceive> list = msgReceiveMapper.selectAddMsgReceive(msgReceive);
         return  list;
     }
 
-    public void insertAllMsgSystem(MsgReceive msgReceive){
-        msgReceiveMapper.insertAllMsgSystem(msgReceive);
+    public void insertAllMsgReceive(MsgReceive msgReceive){
+        msgReceiveMapper.insertAllMsgReceive(msgReceive);
     };
+
+    public   void deleteMsgReceive(List<Integer> idList){
+        msgReceiveMapper.deleteMsgReceive(idList);
+    }
 }

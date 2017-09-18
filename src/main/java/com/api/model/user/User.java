@@ -45,7 +45,7 @@ public class User {
     /** 状态 0=正常 1冻结*/
     private Integer status;
     /** 用户类型 0=管理员 1=教师 2=普通学员*/
-    private int userType;
+    private Integer userType;
 
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Transient
@@ -142,22 +142,6 @@ public class User {
         this.nickName = nickName;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public int getUserType() {
-        return userType;
-    }
-
-    public void setUserType(int userType) {
-        this.userType = userType;
-    }
-
     public Integer getStatus() {
         return status;
     }
@@ -172,5 +156,21 @@ public class User {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public Integer getUserType() {
+        return userType;
+    }
+
+    public void setUserType(Integer userType) {
+        this.userType = userType;
     }
 }

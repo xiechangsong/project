@@ -1,5 +1,7 @@
 package com.api.model.system.letter;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,10 +24,13 @@ public class MsgSystem implements Serializable {
 	@GeneratedValue
     private Long id;// 主键Id
     private String content;// 信内容
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date addTime;// 添加时间
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date updateTime;// 更新时间
     private int status;//状态
     private String addTimeStr;//查询辅助字段
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date endTime;//结束时间
 
 	public Long getId() {

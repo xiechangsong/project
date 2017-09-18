@@ -34,7 +34,7 @@ public class TeacherService {
         String name= Common.converterToFirstSpell(teacher.getRealName());//获取讲师的登录用户名
         User user=new User();
         user.setUserName(name);
-        user.setPassWord("111111");
+        user.setPassWord("111111",true);
         user.setAddTime(new Date());
         user.setRealName(teacher.getRealName());
         user.setUserType(1);

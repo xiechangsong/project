@@ -1,8 +1,11 @@
 package com.api.model.teaching.kpoint;
 
+import com.api.model.teaching.examination.TestPaper;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -39,6 +42,14 @@ public class CourseKpoint implements Serializable{
     /**节点list*/
     private String fileType;//节点文件格式
     private String content;//文本内容
+
+	private int paperId;//试卷id
+	@Transient
+	private TestPaper testPaper;
+	@Transient
+	private String paperName;//试卷名称
+	private int testType;//试卷类型
+
 	public int getKpointId() {
 		return kpointId;
 	}
@@ -114,7 +125,36 @@ public class CourseKpoint implements Serializable{
 	public void setContent(String content) {
 		this.content = content;
 	}
-    
-    
 
+	public int getPaperId() {
+		return paperId;
+	}
+
+	public void setPaperId(int paperId) {
+		this.paperId = paperId;
+	}
+
+	public TestPaper getTestPaper() {
+		return testPaper;
+	}
+
+	public void setTestPaper(TestPaper testPaper) {
+		this.testPaper = testPaper;
+	}
+
+	public String getPaperName() {
+		return paperName;
+	}
+
+	public void setPaperName(String paperName) {
+		this.paperName = paperName;
+	}
+
+	public int getTestType() {
+		return testType;
+	}
+
+	public void setTestType(int testType) {
+		this.testType = testType;
+	}
 }

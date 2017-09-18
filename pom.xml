@@ -9,8 +9,6 @@
 	<!--部署tomcat下需将jar改成war-->
 	<packaging>jar</packaging>
 
-	<name>service-api</name>
-	<description>Demo project for Spring Boot</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

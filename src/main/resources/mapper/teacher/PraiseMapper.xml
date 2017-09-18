@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.teacher.PraiseMapper">
+
+    <resultMap id="PraiseResultMap" type="com.api.model.teaching.praise.Praise">
+        <result column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="target_id" property="targetId" />
+        <result column="type" property="type" />
+        <result column="add_time" property="addTime" />
+    </resultMap>
+    <parameterMap id="Praise" type="com.api.model.teaching.praise.Praise" />
+
+    <sql id="Praise_Column_List">id,user_id,target_id,type,add_time</sql>
+
+    <insert id="addPraise" parameterMap="Praise">
+        insert into praise (user_id,target_id,type,add_time)
+        values
+        (#{userId},#{targetId},#{type},now())
+    </insert>
+
+    <select id="selectPraise" parameterType="java.util.List" resultMap="PraiseResultMap">
+        SELECT
+        <include refid="Praise_Column_List" />
+        FROM praise WHERE target_id = #{targetId} AND type = #{type} AND  user_id =#{userId}
+    </select>
+
+    <delete id="deletePraise" parameterType="java.lang.Integer" >
+        DELETE FROM praise WHERE target_id=#{targetId} and user_id=#{userId} and  type=#{type};
+    </delete>
+</mapper>

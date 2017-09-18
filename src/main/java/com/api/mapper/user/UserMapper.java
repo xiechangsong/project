@@ -34,4 +34,6 @@ public interface UserMapper {
 
     /**批量新增学员*/
     void addStudentBatch (List<User> userList);
+
+
 }

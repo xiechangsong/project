@@ -20,6 +20,8 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,6 +78,27 @@ public class Common {
 	}
 
 
+	/**
+	 * 解析数组
+	 * @param parameterType 数组参数类型  0 :int 1:String
+	 * @param parameterName 徐解析数组名称
+	 * @return
+	 */
+	/*public Object arrayParsing (Integer parameterType,String parameterName) {
+		JSONArray jsonArray =JSONArray.parseArray(parameterName);
+		StringBuilder sb=new StringBuilder();
+		if (jsonArray.size() == 0) {
+			return ResultUtil.ERROR(ResultEnum.PARAMETER_MISSING.getCode(),ResultEnum.PARAMETER_MISSING.getMsg());
+		}
+		JSONObject jUser = null;
+		for (int i=0;i<jsonArray.size();i++) {
+			jUser = jsonArray.getJSONObject(i);
+			sb.append(jUser.getString(parameterName));
+			if(i != jsonArray.size() - 1) {
+				sb.append(",");
+			}
+		}
+	}*/
 	/**
 	 * 上传文件
 	 * @param file
@@ -903,6 +926,36 @@ public class Common {
 			}
 		}
 		return pinyinName;
+	}
+
+	/**
+	 * 文件公共处理
+	 * @param multipartFile
+	 * @return
+	 * @throws Exception
+	 */
+	public static String fileImg(MultipartFile multipartFile)throws Exception{
+		//获取request 对象
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+		Result result= Common.upload(request,multipartFile,2);//图片上传
+		Result r = (Result) result.getData();
+		Object o = (Object) r.getData();
+		Map<String,Object> map= (Map<String, Object>) o;
+		String fileName = null;
+		String fileAddress =null;
+		for(String key : map.keySet()){
+			String value = (String) map.get(key);
+			if (key.equals("fileName")){
+				fileName =value;
+			}
+			if (key.equals("fileAddress")){
+				fileAddress =value;
+			}
+		}
+		String url =fileAddress+fileName;
+
+		return url;
 	}
 
 }

@@ -1,9 +1,12 @@
 package com.api.model.teaching.course;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author www.inxedu.com
@@ -21,7 +24,8 @@ public class CourseNote implements Serializable{
     private Long userId;//用户ID
 	private String title;//笔记标题
     private String content;//笔记内容
-    private java.util.Date updateTime;//添加修改时间
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private Date updateTime;//添加修改时间
     private int status;//0公开1隐藏
 	public Long getId() {
 		return id;

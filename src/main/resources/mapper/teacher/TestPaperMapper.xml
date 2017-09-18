@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.mapper.teacher.TestPaperMapper">
+
+    <resultMap id="TestPaperResultMap" type="com.api.model.teaching.examination.TestPaper">
+        <result column="id" property="id" />
+        <result column="paper_name" property="paperName" />
+        <result column="subject_id" property="subjectId" />
+        <result column="paper_type" property="paperType" />
+        <result column="answer_time" property="answerTime" />
+        <result column="paper_describe" property="paperDescribe" />
+          <result column="total_score" property="totalScore" />
+        <result column="difficulty" property="difficulty" />
+          <result column="add_time" property="addTime" />
+        <result column="test_set" property="testSet" />
+        <result column="status" property="status" />
+            <association property="subject" column="subject_id" javaType="com.api.model.system.subject.Subject">
+            <id property="subjectId" column="subject_id"/>
+            <result property="subjectName" column="subject_name"/>
+            </association>
+    </resultMap>
+
+    <parameterMap id="TestPaper" type="com.api.model.teaching.examination.TestPaper" />
+
+    <sql id="TestPaper_Column_List">id, paper_name, subject_id,paper_type,answer_time,paper_describe,total_score,difficulty,add_time</sql>
+
+    <insert id="addTestPaper" parameterMap="TestPaper">
+        /*  获取插入后的主键id*/
+        <selectKey resultType="int" keyProperty="id" order="AFTER" >
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    insert into test_paper
+        (paper_name, subject_id,paper_type,answer_time,paper_describe,total_score,difficulty,add_time)
+    values
+        (#{paperName},#{subjectId}, #{paperType},#{answerTime},#{paperDescribe},#{totalScore},#{difficulty},#{addTime})
+  </insert>
+
+    <select id="searchTestPaperList" parameterMap="TestPaper" resultMap="TestPaperResultMap">
+        SELECT
+        t.*,s.*
+        FROM test_paper t INNER JOIN subject s on t.subject_id=s.subject_id
+        WHERE 1=1 AND t.status=0
+        <if test="id != null and id!=''">
+            and t.id=#{id}
+        </if>
+        <if test="paperName != null and paperName!=''">
+            AND t.paper_name LIKE '%${paperName}%'
+        </if>
+        <if test="subjectId != null and subjectId!=''">
+            and t.subject_id=#{subjectId}
+        </if>
+        <if test="paperType != null">
+            AND t.paper_type=#{paperType}
+        </if>
+        <if test="difficulty != null">
+            and t.difficulty=#{difficulty}
+        </if>
+    </select>
+
+
+    <!--批量删除 逻辑删除-->
+    <update id="deleteTestPaper" parameterType="java.util.List">
+        UPDATE test_paper SET status=1
+        WHERE id IN
+        <foreach item="examId" collection="list" open="(" close=")" separator=",">
+            #{examId}
+        </foreach>
+    </update>
+
+    <!--修改-->
+    <update id="updateTestPaper" parameterMap="TestPaper">
+        UPDATE test_paper
+        <trim prefix="set" suffixOverrides=",">
+            <if test="subjectId!=null">subject_id=#{subjectId},</if>
+            <if test="paperType!=null">paper_type=#{paperType},</if>
+            <if test="paperDescribe!=null">paper_describe=#{paperDescribe},</if>
+            <if test="answerTime!=null">answer_time=#{answerTime},</if>
+            <if test="totalScore!=null">total_score=#{totalScore},</if>
+            <if test="difficulty!=null">difficulty=#{difficulty},</if>
+            <if test="testSet!=null">test_set=#{testSet},</if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+
+    <!--为试卷添加试题-->
+    <update id="testpaperAddingQuestions" parameterMap="TestPaper">
+        UPDATE test_paper
+        <trim prefix="set" suffixOverrides=",">
+            <if test="testSet!=null">test_set=#{testSet},</if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+
+    <select id="searchTestPaper" parameterType="int" resultMap="TestPaperResultMap">
+        SELECT
+        t.*,s.*
+        FROM test_paper t LEFT JOIN subject s on t.subject_id=s.subject_id
+        WHERE t.id=#{paperId}
+    </select>
+
+</mapper>

@@ -51,13 +51,11 @@ public class LogAspect {
             User u= userService.getUserInfo(user.getUserName());
         if (u.getUserType()==2){
             //获取Controller信息
-            String description =getControllerMethodDescription(joinPoint);
-            if (description!=null) {
-                SysUserOperation sysUserOperation = new SysUserOperation();
+            SysUserOperation sysUserOperation =getControllerMethodDescription(joinPoint);
+            if (sysUserOperation.getOperation()!=null) {
                 //获取操作用户
                 sysUserOperation.setName(user.getUserName());
                 //获取注解中的值,赋给操作描述
-                sysUserOperation.setOperation(description);
 
                 sysUserOperationService.addSysUserOperation(sysUserOperation);
             }
@@ -74,12 +72,11 @@ public class LogAspect {
      * @throws Exception
      */
 
-    public  static String getControllerMethodDescription(JoinPoint joinPoint)  throws Exception {
+    public  static SysUserOperation getControllerMethodDescription(JoinPoint joinPoint)  throws Exception {
         //获取Controller 类
         String targetName = joinPoint.getTarget().getClass().getName();
         //获取注解value
         String methodName = joinPoint.getSignature().getName();
-
         //获取对象值 Object
         Object[] arguments = joinPoint.getArgs();
     /*    StringBuffer nameBuffer = new StringBuffer();
@@ -95,15 +92,29 @@ public class LogAspect {
         }*/
         Class targetClass = Class.forName(targetName);
         Method[] methods = targetClass.getMethods();
-
-        String description =null;
+        SysUserOperation sysUserOperation = new SysUserOperation();
        if (methodName.equals("updateUser")){
-            description="修改用户信息";
+           sysUserOperation.setOperation("修改用户信息");
+           sysUserOperation.setType("2");
         }
         if (methodName.equals("register")||methodName.equals("importStudentInfo")){
-            description="注册用户角色";
+            sysUserOperation.setOperation("注册用户角色");
+            sysUserOperation.setType("1");
         }
-        return description;
+        if (methodName.contains("delTeacher")){
+            sysUserOperation.setOperation("删除教师角色");
+            sysUserOperation.setType("3");
+        }
+        if (methodName.contains("addTeacher")){
+            sysUserOperation.setOperation("新增教师角色");
+            sysUserOperation.setType("1");
+        }
+        if (methodName.contains("updateTeacher")){
+            sysUserOperation.setOperation("修改教师角色");
+            sysUserOperation.setType("2");
+
+        }
+        return sysUserOperation;
     }
 }
 

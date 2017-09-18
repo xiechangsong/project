@@ -5,6 +5,7 @@
     <resultMap id="ExaminationQuestionsResultMap" type="com.api.model.teaching.examination.ExaminationQuestions">
         <result column="id" property="id" />
         <result column="questions_type" property="questionsType" />
+        <result column="questions_classify" property="questionsClassify" />
         <result column="subject_id" property="subjectId" />
         <result column="difficulty" property="difficulty" />
         <result column="questions_title" property="questionsTitle" />
@@ -12,6 +13,7 @@
           <result column="correct" property="correct" />
           <result column="answer_analysis" property="answerAnalysis" />
           <result column="add_time" property="addTime" />
+        <result property="status" column="status"/>
             <association property="subject" column="subject_id" javaType="com.api.model.system.subject.Subject">
             <id property="subjectId" column="subject_id"/>
             <result property="subjectName" column="subject_name"/>
@@ -20,7 +22,7 @@
 
     <parameterMap id="ExaminationQuestions" type="com.api.model.teaching.examination.ExaminationQuestions" />
 
-    <sql id="ExaminationQuestions_Column_List">id, questions_type, subject_id,difficulty,questions_title,questions_option,correct,answer_analysis,add_time</sql>
+    <sql id="ExaminationQuestions_Column_List">id, questions_type,questions_classify, subject_id,difficulty,questions_title,questions_option,correct,answer_analysis,add_time,status</sql>
 
     <insert id="addExaminationQuestions" parameterMap="ExaminationQuestions">
         /*  获取插入后的主键id*/
@@ -28,39 +30,66 @@
             SELECT LAST_INSERT_ID() AS id
         </selectKey>
     insert into examination_questions
-        (questions_type, subject_id,difficulty,questions_title,questions_option,correct,answer_analysis,add_time)
+        (questions_type, questions_classify,subject_id,difficulty,questions_title,questions_option,correct,answer_analysis,add_time,status)
     values
-        (#{questionsType},#{subjectId}, #{difficulty},#{questionsTitle},#{questionsOption},#{correct},#{answerAnalysis},#{addTime})
+        (#{questionsType},#{questionsClassify},#{subjectId}, #{difficulty},#{questionsTitle},#{questionsOption},#{correct},#{answerAnalysis},#{addTime},#{status})
   </insert>
 
     <select id="searchExaminationQuestionsList" parameterMap="ExaminationQuestions" resultMap="ExaminationQuestionsResultMap">
         SELECT
         e.*,s.*
-        FROM examination_questions e INNER JOIN subject s on e.subject_id=s.subject_id
-        WHERE 1=1
+        FROM examination_questions e LEFT JOIN subject s on e.subject_id=s.subject_id
+        WHERE 1=1 AND e.status=0
         <if test="id != null and id!=''">
             and e.id=#{id}
         </if>
         <if test="questionsTitle != null and questionsTitle!=''">
             AND e.questions_title LIKE '%${questionsTitle}%'
         </if>
+        <if test="questionsClassify != null">
+            AND e.questions_classify=#{questionsClassify}
+        </if>
         <if test="subjectId != null and subjectId!=''">
             and e.subject_id=#{subjectId}
         </if>
-        <if test="questionsType != null and questionsType!=''">
-            AND e.questions_type LIKE '%${questionsType}%'
+        <if test="questionsType != null">
+            AND e.questions_type=#{questionsType}
         </if>
-        <if test="difficulty != null and difficulty!=''">
+        <if test="difficulty != null">
             and e.difficulty=#{difficulty}
         </if>
     </select>
 
-    <!--批量删除-->
-    <delete id="deleteExaminationQuestions" parameterType="java.util.List">
-        DELETE FROM examination_questions
+    <!--批量删除 逻辑删除-->
+    <update id="deleteExaminationQuestions" parameterType="java.util.List">
+        UPDATE examination_questions SET status=1
         WHERE id IN
         <foreach item="examId" collection="list" open="(" close=")" separator=",">
             #{examId}
         </foreach>
-    </delete>
+    </update>
+
+    <!--修改-->
+    <update id="updateExaminationQuestions" parameterMap="ExaminationQuestions">
+        UPDATE examination_questions
+        <trim prefix="set" suffixOverrides=",">
+            <if test="questionsClassify!=null">questions_classify=#{questionsClassify},</if>
+            <if test="subjectId!=null">subject_id=#{subjectId},</if>
+            <if test="difficulty!=null">difficulty=#{difficulty},</if>
+            <if test="questionsTitle!=null">questions_title=#{questionsTitle},</if>
+            <if test="questionsOption!=null">questions_option=#{questionsOption},</if>
+            <if test="correct!=null">correct=#{correct},</if>
+            <if test="answerAnalysis!=null">answer_analysis=#{answerAnalysis},</if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+
+    <!--查询一张试卷内所有试题-->
+    <select id="getExaminationQuestions" resultMap="ExaminationQuestionsResultMap">
+        select e.*,s.* from examination_questions e INNER JOIN subject s on s.subject_id= e.subject_id where e.id in
+        <foreach collection="list" index="index" item="examId" open="(" separator="," close=")">
+            #{examId}
+        </foreach>
+        ORDER BY e.questions_type
+    </select>
 </mapper>

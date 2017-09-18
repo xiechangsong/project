@@ -20,4 +20,10 @@ public interface ExaminationQuestionsMapper {
 
     /**删除试题（可单独删除也可批量删除）*/
     void deleteExaminationQuestions (List<Integer> idList);
+
+    /** 修改试题*/
+    void updateExaminationQuestions(ExaminationQuestions examinationQuestions);
+
+
+    List<ExaminationQuestions> getExaminationQuestions(List<Integer> list);
 }

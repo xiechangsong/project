@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.api.enume.ResultEnum;
 import com.api.model.common.Result;
 import com.api.model.teaching.course.Course;
-import com.api.model.teaching.course.CourseNote;
 import com.api.model.teaching.course.JoinRecommendCourseList;
 import com.api.model.teaching.kpoint.CourseCatalog;
 import com.api.model.teaching.kpoint.CourseKpoint;
@@ -47,13 +46,7 @@ public class CourseController {
         return ResultUtil.SUCCESS(ResultEnum.SUCCESS,course);
     }
 
-    @RequestMapping(value = "/course/addCourseNote", method = RequestMethod.POST)
-    @ResponseBody
-    public Result addCourseNote(CourseNote courseNote) {
 
-        courseService.addCourseNote(courseNote);
-        return ResultUtil.SUCCESS(ResultEnum.SUCCESS,courseNote);
-    }
 
     @RequestMapping(value = "/course/addCourseKpoint", method = RequestMethod.POST)
     @ResponseBody
